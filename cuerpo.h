@@ -1,7 +1,6 @@
 #ifndef CUERPO_H
 #define CUERPO_H
 
-
 class cuerpo
 {
 private:

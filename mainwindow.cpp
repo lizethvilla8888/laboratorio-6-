@@ -1,7 +1,12 @@
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include <QDebug>
+#include <QFile>
+
+#include <QTextStream>
+#include <QMessageBox>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     h_limit = 2000;
     v_limit = 1000;
-    dt = 1;//0.1;
+    dt = 0.1;
 
     timer = new QTimer(this);
     scene = new QGraphicsScene(this);
@@ -25,8 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     timer->stop();
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
-
-
 }
 
 MainWindow::~MainWindow()
@@ -38,33 +41,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::actualizar()
 {
-    for (int i=0;i<bars.size() ;i++ ) {
+        for (int i=0;i<bars.size() ;i++ ) {
         for (int j=0;j<bars.size() ;j++ ) {
             if(i!=j){
-                colicion();
                 bars.at(i)->getEsf()->acelerar(bars.at(j)->getEsf()->getPX(),bars.at(j)->getEsf()->getPY(),bars.at(j)->getEsf()->getMasa());
                 bars.at(i)->actualizar(dt);
-                qDebug () <<bars.at(0)->getEsf()->getPX(),bars.at(0)->getEsf()->getPY(),bars.at(1)->getEsf()->getPX(),bars.at(1)->getEsf()->getPY(),bars.at(2)->getEsf()->getPX(),bars.at(2)->getEsf()->getPY();
-            }
-        }
-    }
-}
-
-void MainWindow::colicion()
-{
-    for (int i=0;i<bars.size() ;i++ ) {
-        for (int j=0;j<bars.size() ;j++ ) {
-            if(i!=j){
-                if (bars.at(i)->collidesWithItem(bars.at(j))){
-                    scene->removeItem(bars.at(i));
-                    bars.removeAt(i);
-                    scene->removeItem(bars.at(j));
-                    bars.removeAt(j);
                 }
             }
         }
-    }
 }
+
 
 void MainWindow::on_Agregar_clicked()
 {
@@ -77,16 +63,20 @@ void MainWindow::on_Agregar_clicked()
     double m= ui->Masa->text().toDouble();
 
    bars.append(new cuerpograf(x,y,vx,vy,m,r));
-  // qDebug () << "cuerpo agregado a lista"<<can;
+  qDebug () << "cuerpo agregado a lista"<<can;
 }
 
 void MainWindow::on_Inicio_clicked()
 {
+    int num = 0;
+    qDebug () << "num inicializado en 0"<<num;
     for (int i=0;i<bars.size() ;i++ ) {
         bars.at(i)->actualizar(dt);
         scene->addItem(bars.at(i));
         // qDebug () << "cuerpo agregado a la esena"<<i;
     }
+    num = bars.size();
+    qDebug () << "numero de elemetos de lista"<<num;
     timer->start(dt);
 }
 

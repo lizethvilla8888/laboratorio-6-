@@ -11,7 +11,7 @@ cuerpo::cuerpo(float PX_, float PY_, float VX_, float VY_, float mass, float R_)
     masa = mass;
     AX = 0;
     AY = 0;
-    G = 1;//6.67384*(pow(10,-11));
+    G = 6.67384*(pow(10,-11));
     R = R_;
 }
 

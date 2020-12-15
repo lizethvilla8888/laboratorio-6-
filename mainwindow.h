@@ -5,6 +5,7 @@
 #include <QTimer>
 #include "cuerpo.h"
 #include "cuerpograf.h"
+#include <QFileDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,12 +22,9 @@ public:
 
 private slots:
     void actualizar();
-    void colicion();
 
     void on_Agregar_clicked();
-
     void on_Inicio_clicked();
-
     void on_Pausa_clicked();
 
 private:
